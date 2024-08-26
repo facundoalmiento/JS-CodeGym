@@ -1,78 +1,56 @@
 // Declaración de variables y arrays
 const horarios = ["9:00 AM", "10:00 AM", "11:00 AM", "12:00 PM", "1:00 PM", "2:00 PM"];
-let reservas = [];
+let reservas = JSON.parse(localStorage.getItem('reservas')) || [];
 
-// mostrar los horarios disponibles
-function mostrarHorarios() {
-    console.log("Horarios disponibles:");
-    horarios.forEach(function(horario, index) {
-        console.log(`${index + 1}. ${horario}`);
+// Referencias a elementos del DOM
+const formReserva = document.getElementById('formReserva');
+const listaReservas = document.getElementById('listaReservas');
+const selectHorario = document.getElementById('horario');
+
+// Cargar opciones de horarios en el select
+function cargarHorarios() {
+    horarios.forEach(horario => {
+        const option = document.createElement('option');
+        option.value = horario;
+        option.textContent = horario;
+        selectHorario.appendChild(option);
     });
 }
 
-// reservar un horario
-function reservarHorario() {
-    const nombre = prompt("Ingrese su nombre:");
-    mostrarHorarios();
-    const seleccion = parseInt(prompt("Seleccione un horario (ingrese el número):")) - 1;
-
-    if (seleccion >= 0 && seleccion < horarios.length) {
-        const horarioSeleccionado = horarios[seleccion];
-        reservas.push({ nombre, horario: horarioSeleccionado });
-        alert(`Reserva confirmada para ${nombre} a las ${horarioSeleccionado}`);
-    } else {
-        alert("Selección inválida. Inténtelo de nuevo.");
-    }
-
-    // Volver al menú principal
-    mostrarMenu();
-}
-
-// mostrar las reservas
+// Mostrar reservas almacenadas
 function mostrarReservas() {
-    console.log("Reservas confirmadas:");
+    listaReservas.innerHTML = ''; // Limpiar la lista antes de mostrar
     if (reservas.length === 0) {
-        console.log("No hay reservas realizadas.");
+        listaReservas.innerHTML = '<li class="list-group-item">No hay reservas realizadas.</li>';
     } else {
         reservas.forEach((reserva, index) => {
-            console.log(`${index + 1}. ${reserva.nombre} a las ${reserva.horario}`);
+            const li = document.createElement('li');
+            li.classList.add('list-group-item');
+            li.textContent = `${reserva.nombre} a las ${reserva.horario}`;
+            listaReservas.appendChild(li);
         });
     }
-
-// Volver al menú principal
-    mostrarMenu();
 }
 
-// mostrar el menú
-function mostrarMenu() {
-    const opcion = prompt("Seleccione una opción: \n1. Mostrar horarios \n2. Reservar horario \n3. Mostrar reservas \n4. Salir");
-    console.log("Opción seleccionada:", opcion);
-    switch (opcion) {
-        case "1":
-            mostrarHorarios();
-            mostrarMenu();
-            break;
-        case "2":
-            reservarHorario();
-            break;
-        case "3":
-            mostrarReservas();
-            break;
-        case "4":
-            alert("Gracias por usar el Sistema de Reservas de CodeGym. ¡Hasta luego!");
-            break;
-        default:
-            alert("Opción inválida. Por favor, intente de nuevo.");
-            mostrarMenu();
-    }
-}
+// Agregar una nueva reserva
+formReserva.addEventListener('submit', function(event) {
+    event.preventDefault(); // Prevenir el envío del formulario
+    const nombre = document.getElementById('nombre').value;
+    const horario = selectHorario.value;
 
-// Función para iniciar
-function iniciarSimulador() {
-    console.log("Bienvenido al Sistema de Reservas de CodeGym");
-    mostrarMenu();
-}
+    const nuevaReserva = { nombre, horario };
+    reservas.push(nuevaReserva);
 
-// Iniciar
-iniciarSimulador();
+    // Guardar en localStorage
+    localStorage.setItem('reservas', JSON.stringify(reservas));
 
+    // Mostrar las reservas actualizadas
+    mostrarReservas();
+
+    // Limpiar el formulario
+    formReserva.reset();
+});
+
+// Inicializar la aplicación
+cargarHorarios();
+mostrarReservas();
