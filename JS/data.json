@@ -1,0 +1,15 @@
+{
+    "clases": [
+        { "nombre": "CrossCode", "cupos": 5 },
+        { "nombre": "CodeLift", "cupos": 3 },
+        { "nombre": "HTML Hit", "cupos": 2 },
+        { "nombre": "CSS Crunch", "cupos": 5 },
+        { "nombre": "JavaScript Jump", "cupos": 5 },
+        { "nombre": "Bootstrap Box", "cupos": 2 },
+        { "nombre": "FlexFit", "cupos": 6 },
+        { "nombre": "Media Query Muscle", "cupos": 4 },
+        { "nombre": "Spinning Selectores", "cupos": 5 },
+        { "nombre": "Yoga Animado", "cupos": 4 }
+    ],
+    "horarios": ["9:00 AM", "10:00 AM", "11:00 AM", "12:00 PM", "1:00 PM", "2:00 PM"]
+}
